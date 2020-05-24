@@ -437,3 +437,77 @@
 
 ## PR checklist:
  - [ ] Выставлен label с темой домашнего задания
+
+-------------------------------------------------------------------------------
+ 
+# Выполнено ДЗ №2
+
+ - [] Основное ДЗ
+ - [] Задание со *
+ 
+# В процессе сделано:
+  1.## Установил kind (https://kind.sigs.k8s.io/docs/user/quick-start)
+    > kind creates and manages local Kubernetes clusters using Docker container 'nodes'
+    
+    [root@dreamer-pc ~]# curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.8.1/kind-$(uname)-amd64
+	% Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+				      Dload  Upload   Total   Spent    Left  Speed
+      100    97  100    97    0     0    133      0 --:--:-- --:--:-- --:--:--   133
+      100   629  100   629    0     0    406      0  0:00:01  0:00:01 --:--:--  1335
+      100 9900k  100 9900k    0     0   372k      0  0:00:26  0:00:26 --:--:--  14
+    
+    [root@dreamer-pc ~]# chmod +x ./kind
+    [root@dreamer-pc ~]# mv kind /usr/sbin/
+    [root@dreamer-pc ~]# kind --version
+      kind version 0.8.1
+
+    [dragon@dreamer-pc slkrylov_platform]$ kind create cluster --config kubernetes-controllers/kind-config.yaml
+      Creating cluster "kind" ...
+      ✓ Ensuring node image (kindest/node:v1.18.2)
+      ✓ Preparing node 
+      ✓ Configuring the external load balancer
+      ✓ Writing configuration 
+      ✓ Starting control-plane
+      ✓ Installing CNI
+      ✓ Installing StorageClass
+      ✓ Joining more control-plane nodes
+      ✓ Joining worker nodes
+      Set kubectl context to "kind-kind"
+      You can now use your cluster with:
+      kubectl cluster-info --context kind-kind
+      Thanks for using kind!
+      
+    [dragon@dreamer-pc ~]$ kubectl cluster-info --context kind-kind
+      Kubernetes master is running at https://127.0.0.1:34263
+      KubeDNS is running at https://127.0.0.1:34263/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+      
+    [dragon@dreamer-pc ~]$ kind get nodes
+      kind-external-load-balancer
+      kind-control-plane2
+      kind-worker2
+      kind-worker3
+      kind-worker
+      kind-control-plane
+      kind-control-plane3
+      
+    [dragon@dreamer-pc ~]$ kind get clusters
+      kind
+      
+    [dragon@dreamer-pc ~]$ kubectl get nodes
+      NAME                  STATUS   ROLES    AGE   VERSION
+      kind-control-plane    Ready    master   13m   v1.18.2
+      kind-control-plane2   Ready    master   13m   v1.18.2
+      kind-control-plane3   Ready    master   12m   v1.18.2
+      kind-worker           Ready    <none>   11m   v1.18.2
+      kind-worker2          Ready    <none>   11m   v1.18.2
+      kind-worker3          Ready    <none>   11m   v1.18.2
+    
+    ! TIPS # посмотреть доступные контексты (кластеры)
+    [dragon@dreamer-pc .kube]$ kubectl config get-contexts
+      CURRENT   NAME        CLUSTER     AUTHINFO    NAMESPACE
+      *         kind-kind   kind-kind   kind-kind   
+		minikube    minikube    minikube
+		
+    ! TIPS # переключение между контекстами 
+    [dragon@dreamer-pc ~]$ kubectl config use-context kind-kind
+      Switched to context "kind-kind".
