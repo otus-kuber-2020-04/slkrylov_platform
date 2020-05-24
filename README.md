@@ -440,7 +440,7 @@
 
 -------------------------------------------------------------------------------
  
-# Выполнено ДЗ №2
+# Выполнено ДЗ №3
 
  - [] Основное ДЗ
  - [] Задание со *
@@ -449,6 +449,7 @@
   1.## Установил kind (https://kind.sigs.k8s.io/docs/user/quick-start)
     > kind creates and manages local Kubernetes clusters using Docker container 'nodes'
     
+  ````
     [root@dreamer-pc ~]# curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.8.1/kind-$(uname)-amd64
 	% Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
 				      Dload  Upload   Total   Spent    Left  Speed
@@ -511,3 +512,5 @@
     ! TIPS # переключение между контекстами 
     [dragon@dreamer-pc ~]$ kubectl config use-context kind-kind
       Switched to context "kind-kind".
+  ````
+  
