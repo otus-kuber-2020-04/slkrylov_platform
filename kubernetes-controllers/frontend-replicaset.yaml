@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  # задает имя (префикс имени) для создаваемых Pod-ов и имя самой реплики
+  name: frontend
+  # задает метки для ReplicaSet объекта
+  labels:
+    name: frontend-replicaset
+spec:
+  # количество запускаемых реплик
+  replicas: 3
+  
+  # с помощью селектора происходит выборка pod-ов по меткам, которые уазаны в шаблоне Pod-a
+  # контроллер управляет pod-ами, которые попали в выборку
+  selector:
+    matchLabels:
+      app: frontend
+  
+  # описание шаблона создаваемого Pod-а
+  template:
+    # задает метки для Pod-ов создаваемых этим шаблоном
+    metadata:
+      labels:
+        app: frontend
+        branch: kubernetes-controllers
+        ver: v0.0.2
+    # определяет список контейнеров, которые будут созданы
+    spec:
+      containers:
+      - name: server
+        image: slkrylov/otus:v0.0.2

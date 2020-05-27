@@ -446,7 +446,7 @@
  - [] Задание со *
  
 # В процессе сделано:
-  1.## Установил kind (https://kind.sigs.k8s.io/docs/user/quick-start)
+  1. ## Установил kind (https://kind.sigs.k8s.io/docs/user/quick-start)
     > kind creates and manages local Kubernetes clusters using Docker container 'nodes'
     
   ````
@@ -513,4 +513,114 @@
     [dragon@dreamer-pc ~]$ kubectl config use-context kind-kind
       Switched to context "kind-kind".
   ````
-  
+
+  2. ## Работа с контроллером ReplicaSet
+
+      - ### Определил из ошибке, что в манифесте frontend-replicaset.yaml отсутствует обязательное поле selector
+
+        ````
+        [dragon@dreamer-pc kubernetes-controllers]$ kubectl apply -f frontend-replicaset.yaml 
+          error: error validating "frontend-replicaset.yaml": error validating data: [ValidationError(ReplicaSet): unknown field "labels" in io.k8s.api.apps.v1.ReplicaSet, ValidationError(ReplicaSet.spec): missing required field "selector" in io.k8s.api.apps.v1.ReplicaSetSpec]; if you choose to ignore these errors, turn validation off with --validate=false
+        ````
+      - ### Исправил манифест
+	      - #### https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors
+	      - #### https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.10/#replicaset-v1-apps
+        - #### пример поля selector (из док.)
+	      
+            ````
+            selector:
+              matchLabels:
+                component: redis
+              matchExpressions:
+                - {key: tier, operator: In, values: [cache]}
+                - {key: environment, operator: NotIn, values: [dev]}
+            ````
+	
+        ````
+        # применяю исправленный манифест
+        [dragon@dreamer-pc kubernetes-controllers]$ kubectl apply -f frontend-replicaset.yaml 
+          replicaset.apps/rset-frontend created
+          
+        [dragon@dreamer-pc ~]$ kubectl get replicasets.apps 
+          NAME            DESIRED   CURRENT   READY   AGE
+          rset-frontend   1         1         1       4m28s
+
+        # пример того как проверить работу selector  
+        [dragon@dreamer-pc ~]$ kubectl get pods -l "app=frontend"
+          NAME                  READY   STATUS    RESTARTS   AGE
+          rset-frontend-98phc   1/1     Running   0          34m
+
+        # используя ad-hoc команду увеличем количество реплик pod-а
+        [dragon@dreamer-pc ~]$ kubectl scale replicaset rset-frontend --replicas=3
+
+        # проверим, что реплик стало 3
+        [dragon@dreamer-pc ~]$ kubectl get pods -l "app=frontend"
+          NAME                  READY   STATUS    RESTARTS   AGE
+          rset-frontend-4hkxb   1/1     Running   0          4m3s
+          rset-frontend-98phc   1/1     Running   0          41m
+          rset-frontend-bztkw   1/1     Running   0          4m3s
+
+        # проверим каким количеством реплик управляет наш ReplicaSet контроллер
+        [dragon@dreamer-pc ~]$ kubectl get replicasets.apps rset-frontend
+          NAME            DESIRED   CURRENT   READY   AGE
+          rset-frontend   3         3         3       44m
+
+        # убедился, что если удалить Pod-ы то конттроллер их автоматически восстановит
+        [dragon@dreamer-pc ~]$ kubectl delete pod -l "app=frontend" | kubectl get pods -l "app=frontend" -w
+
+        # убедился, что после повторного применения манифеста количество реплик стало соответстовать количеству указаному в манифесте
+        [dragon@dreamer-pc kubernetes-controllers]$ kubectl apply -f frontend-replicaset.yaml 
+          replicaset.apps/rset-frontend configured
+
+        [dragon@dreamer-pc ~]$  kubectl get pods -l "app=frontend"
+          NAME                  READY   STATUS    RESTARTS   AGE
+          rset-frontend-v86bn   1/1     Running   0          7m50s
+
+        ###
+        # экспермент по изменению версии образа указаного в манифесте frontend-replicaset.yaml
+        ###
+
+        # добавил на DockerHub версию образа с новым тегом v0.0.2
+        [root@dreamer-pc]# docker tag 6f275e11ecdf slkrylov/otus:v0.0.2
+
+        [root@dreamer-pc]# docker login
+          Login Succeeded
+
+        [dragon@dreamer-pc]$ docker push slkrylov/otus:v0.0.2
+
+        # применил новый манифест и убедился, что изменения не произошли
+         [dragon@dreamer-pc]$ kubectl apply -f frontend-replicaset.yaml 
+            replicaset.apps/frontend configured
+
+          [dragon@dreamer-pc kubernetes-controllers]$ kubectl get pods --show-labels 
+            NAME             READY   STATUS    RESTARTS   AGE   LABELS
+            frontend-f24xj   1/1     Running   0          15h   app=frontend,branch=kubernetes-controllers,ver=fix
+            frontend-mmbmt   1/1     Running   0          15h   app=frontend,branch=kubernetes-controllers,ver=fix
+            frontend-qf2r4   1/1     Running   0          15h   app=frontend,branch=kubernetes-controllers,ver=fix
+
+        # проверяю какая версия образа указана в объекте ReplicaSet
+        [dragon@dreamer-pc]$ kubectl get replicaset frontend -o=jsonpath='{.spec.template.spec.containers[0].image}'
+            slkrylov/otus:v0.0.2
+
+        # проверяю какой образ и версию используют запущенные Pod-ы
+        [dragon@dreamer-pc]$ kubectl get pods -l app=frontend -o=jsonpath='{.items[0:3].spec.containers[0].image}'
+            slkrylov/otus:microservices-frontend-fix
+
+        # удаляю вручную Pod-ы
+        [dragon@dreamer-pc]$ kubectl delete pods -l 'app=frontend'
+
+        # снова проверяю какой образ используют восстановленные Pod-ы
+        [dragon@dreamer-pc]$ kubectl get pods -l app=frontend -o=jsonpath='{.items[0:3].spec.containers[0].image}'
+            slkrylov/otus:v0.0.2 
+        ````
+        > Руководствуясь материалами лекции опишите произошедшую
+        > ситуацию, почему обновление ReplicaSet не повлекло обновление
+        > запущенных pod?
+        
+        A: Предполагаю, что это связано с тем, что контроллер ReplicaSet следит только за количеством запущенных реплик. 
+	
+
+	
+    
+
+    
