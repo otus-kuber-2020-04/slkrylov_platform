@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # задает имя (префикс имени) для создаваемых реплики и имя для Deployment объекта
+  name: paymentservice
+  # задает метки для объекта Deployment
+  labels:
+    app: paymentservice
+spec:
+  # количество запускаемых реплик
+  replicas: 3
+  
+  # стратегия деплоя 
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+       maxSurge: 100%
+       maxUnavailable: 0%
+  
+  # с помощью селектора происходит выборка pod-ов по меткам, которые уазаны в шаблоне Pod-a
+  # контроллер управляет pod-ами, которые попали в выборку
+  selector:
+    matchLabels:
+      app: paymentservice
+  
+  # описание шаблона создаваемого Pod-а
+  template:
+    # задает метки для Pod-ов создаваемых этим шаблоном
+    metadata:
+      labels:
+        app: paymentservice
+        task: bg-strategy
+        ver: v0.0.2
+    # определяет список контейнеров, которые будут созданы
+    spec:
+      containers:
+      - name: server
+        image: slkrylov/paymentservice:v0.0.2
