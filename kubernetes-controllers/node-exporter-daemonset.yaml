@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-exporter
+  namespace: kube-system
+  labels:
+    k8s-app: node-exporter-daemon
+spec:
+  selector:
+    matchLabels:
+      name: node-exporter-daemon
+  template:
+    metadata:
+      labels:
+        name: node-exporter-daemon
+    spec:
+      # данный toleration управляет возможностью запуска daemonset на master-нодах
+      # $ kubectl explain daemonsets.spec.template.spec.tolerations
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        # возможные значения для effect (NoSchedule|PreferNoSchedule|NoExecute)
+        effect: NoSchedule
+      containers:
+      - name: node-exporter-daemon
+        image: slkrylov/node-exporter
+        resources:
+          limits:
+            memory: 200Mi
+          requests:
+            cpu: 100m
+            memory: 200Mi

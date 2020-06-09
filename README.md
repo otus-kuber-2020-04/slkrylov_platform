@@ -13,7 +13,7 @@
 	```
  4. ## Установил minicube по инструкции https://kubernetes.io/docs/tasks/tools/install-minikube/ для работы с KVM https://minikube.sigs.k8s.io/docs/drivers/kvm2/ Documentation: https://minikube.sigs.k8s.io/docs/reference/drivers/kvm2/
 	```
-    [dragon@dreamer-pc ~]$ minikube start --driver=kvm2
+    $ minikube start --driver=kvm2
       minikube v1.9.2 on Centos 7.7.1908
       Using the kvm2 driver based on existing profile
 
@@ -29,16 +29,16 @@
       Done! kubectl is now configured to use "minikube"
       💾  Downloading driver docker-machine-driver-kvm2:
 	
-    [dragon@dreamer-pc ~]$ minikube status
+    $ minikube status
       m01
       host: Running
       kubelet: Running
       apiserver: Running
       kubeconfig: Configured
       
-    [dragon@dreamer-pc ~]$ minikube config set driver kvm2
+    $ minikube config set driver kvm2
     
-    [dragon@dreamer-pc ~]$ kubectl config view
+    $ kubectl config view
       apiVersion: v1
       clusters:
       - cluster:
@@ -59,7 +59,7 @@
 	  client-certificate: /home/dragon/.minikube/profiles/minikube/client.crt
 	  client-key: /home/dragon/.minikube/profiles/minikube/client.key
 	  
-    [dragon@dreamer-pc ~]$ kubectl cluster-info 
+    $ kubectl cluster-info 
       Kubernetes master is running at https://192.168.39.228:8443
       KubeDNS is running at https://192.168.39.228:8443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
       To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
@@ -442,76 +442,76 @@
  
 # Выполнено ДЗ №3
 
- - [] Основное ДЗ
- - [] Задание со *
+ - [x] Основное ДЗ
+ - [x] Задание со *
  
 # В процессе сделано:
   1. ## Установил kind (https://kind.sigs.k8s.io/docs/user/quick-start)
     > kind creates and manages local Kubernetes clusters using Docker container 'nodes'
     
-  ````
-    [root@dreamer-pc ~]# curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.8.1/kind-$(uname)-amd64
-	% Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+  ````bash
+    $ curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.8.1/kind-$(uname)-amd64
+	      % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
 				      Dload  Upload   Total   Spent    Left  Speed
       100    97  100    97    0     0    133      0 --:--:-- --:--:-- --:--:--   133
       100   629  100   629    0     0    406      0  0:00:01  0:00:01 --:--:--  1335
       100 9900k  100 9900k    0     0   372k      0  0:00:26  0:00:26 --:--:--  14
     
-    [root@dreamer-pc ~]# chmod +x ./kind
-    [root@dreamer-pc ~]# mv kind /usr/sbin/
-    [root@dreamer-pc ~]# kind --version
-      kind version 0.8.1
+    $ chmod +x ./kind
+    $ mv kind /usr/sbin/
+    $ kind --version
+        kind version 0.8.1
 
-    [dragon@dreamer-pc slkrylov_platform]$ kind create cluster --config kubernetes-controllers/kind-config.yaml
-      Creating cluster "kind" ...
-      ✓ Ensuring node image (kindest/node:v1.18.2)
-      ✓ Preparing node 
-      ✓ Configuring the external load balancer
-      ✓ Writing configuration 
-      ✓ Starting control-plane
-      ✓ Installing CNI
-      ✓ Installing StorageClass
-      ✓ Joining more control-plane nodes
-      ✓ Joining worker nodes
-      Set kubectl context to "kind-kind"
-      You can now use your cluster with:
-      kubectl cluster-info --context kind-kind
-      Thanks for using kind!
+    $ kind create cluster --config kubernetes-controllers/kind-config.yaml
+        Creating cluster "kind" ...
+        ✓ Ensuring node image (kindest/node:v1.18.2)
+        ✓ Preparing node 
+        ✓ Configuring the external load balancer
+        ✓ Writing configuration 
+        ✓ Starting control-plane
+        ✓ Installing CNI
+        ✓ Installing StorageClass
+        ✓ Joining more control-plane nodes
+        ✓ Joining worker nodes
+        Set kubectl context to "kind-kind"
+        You can now use your cluster with:
+        kubectl cluster-info --context kind-kind
+        Thanks for using kind!
       
-    [dragon@dreamer-pc ~]$ kubectl cluster-info --context kind-kind
-      Kubernetes master is running at https://127.0.0.1:34263
-      KubeDNS is running at https://127.0.0.1:34263/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+    $ kubectl cluster-info --context kind-kind
+        Kubernetes master is running at https://127.0.0.1:34263
+        KubeDNS is running at https://127.0.0.1:34263/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
       
-    [dragon@dreamer-pc ~]$ kind get nodes
-      kind-external-load-balancer
-      kind-control-plane2
-      kind-worker2
-      kind-worker3
-      kind-worker
-      kind-control-plane
-      kind-control-plane3
+    $ kind get nodes
+        kind-external-load-balancer
+        kind-control-plane2
+        kind-worker2
+        kind-worker3
+        kind-worker
+        kind-control-plane
+        kind-control-plane3
       
-    [dragon@dreamer-pc ~]$ kind get clusters
-      kind
+    $ kind get clusters
+        kind
       
-    [dragon@dreamer-pc ~]$ kubectl get nodes
-      NAME                  STATUS   ROLES    AGE   VERSION
-      kind-control-plane    Ready    master   13m   v1.18.2
-      kind-control-plane2   Ready    master   13m   v1.18.2
-      kind-control-plane3   Ready    master   12m   v1.18.2
-      kind-worker           Ready    <none>   11m   v1.18.2
-      kind-worker2          Ready    <none>   11m   v1.18.2
-      kind-worker3          Ready    <none>   11m   v1.18.2
+    $ kubectl get nodes
+        NAME                  STATUS   ROLES    AGE   VERSION
+        kind-control-plane    Ready    master   13m   v1.18.2
+        kind-control-plane2   Ready    master   13m   v1.18.2
+        kind-control-plane3   Ready    master   12m   v1.18.2
+        kind-worker           Ready    <none>   11m   v1.18.2
+        kind-worker2          Ready    <none>   11m   v1.18.2
+        kind-worker3          Ready    <none>   11m   v1.18.2
     
     ! TIPS # посмотреть доступные контексты (кластеры)
-    [dragon@dreamer-pc .kube]$ kubectl config get-contexts
-      CURRENT   NAME        CLUSTER     AUTHINFO    NAMESPACE
-      *         kind-kind   kind-kind   kind-kind   
-		minikube    minikube    minikube
+    $ kubectl config get-contexts
+        CURRENT   NAME        CLUSTER     AUTHINFO    NAMESPACE
+        *         kind-kind   kind-kind   kind-kind   
+		    minikube    minikube    minikube
 		
     ! TIPS # переключение между контекстами 
-    [dragon@dreamer-pc ~]$ kubectl config use-context kind-kind
-      Switched to context "kind-kind".
+      $ kubectl config use-context kind-kind
+        Switched to context "kind-kind".
   ````
 
   2. ## Работа с контроллером ReplicaSet
@@ -527,7 +527,7 @@
 	      - #### https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.10/#replicaset-v1-apps
         - #### пример поля selector (из док.)
 	      
-            ````
+            ````yaml
             selector:
               matchLabels:
                 component: redis
@@ -536,12 +536,12 @@
                 - {key: environment, operator: NotIn, values: [dev]}
             ````
 	
-        ````
+        ````bash
         # применяю исправленный манифест
-        [dragon@dreamer-pc kubernetes-controllers]$ kubectl apply -f frontend-replicaset.yaml 
+        $ kubectl apply -f frontend-replicaset.yaml 
           replicaset.apps/rset-frontend created
           
-        [dragon@dreamer-pc ~]$ kubectl get replicasets.apps 
+        $ kubectl get replicasets.apps 
           NAME            DESIRED   CURRENT   READY   AGE
           rset-frontend   1         1         1       4m28s
 
@@ -551,28 +551,28 @@
           rset-frontend-98phc   1/1     Running   0          34m
 
         # используя ad-hoc команду увеличем количество реплик pod-а
-        [dragon@dreamer-pc ~]$ kubectl scale replicaset rset-frontend --replicas=3
+        $ kubectl scale replicaset rset-frontend --replicas=3
 
         # проверим, что реплик стало 3
-        [dragon@dreamer-pc ~]$ kubectl get pods -l "app=frontend"
+        $ kubectl get pods -l "app=frontend"
           NAME                  READY   STATUS    RESTARTS   AGE
           rset-frontend-4hkxb   1/1     Running   0          4m3s
           rset-frontend-98phc   1/1     Running   0          41m
           rset-frontend-bztkw   1/1     Running   0          4m3s
 
         # проверим каким количеством реплик управляет наш ReplicaSet контроллер
-        [dragon@dreamer-pc ~]$ kubectl get replicasets.apps rset-frontend
+        $ kubectl get replicasets.apps rset-frontend
           NAME            DESIRED   CURRENT   READY   AGE
           rset-frontend   3         3         3       44m
 
         # убедился, что если удалить Pod-ы то конттроллер их автоматически восстановит
-        [dragon@dreamer-pc ~]$ kubectl delete pod -l "app=frontend" | kubectl get pods -l "app=frontend" -w
+        $ kubectl delete pod -l "app=frontend" | kubectl get pods -l "app=frontend" -w
 
         # убедился, что после повторного применения манифеста количество реплик стало соответстовать количеству указаному в манифесте
         [dragon@dreamer-pc kubernetes-controllers]$ kubectl apply -f frontend-replicaset.yaml 
           replicaset.apps/rset-frontend configured
 
-        [dragon@dreamer-pc ~]$  kubectl get pods -l "app=frontend"
+        $  kubectl get pods -l "app=frontend"
           NAME                  READY   STATUS    RESTARTS   AGE
           rset-frontend-v86bn   1/1     Running   0          7m50s
 
@@ -581,46 +581,379 @@
         ###
 
         # добавил на DockerHub версию образа с новым тегом v0.0.2
-        [root@dreamer-pc]# docker tag 6f275e11ecdf slkrylov/otus:v0.0.2
+        $ docker tag 6f275e11ecdf slkrylov/otus:v0.0.2
 
-        [root@dreamer-pc]# docker login
+        $ docker login
           Login Succeeded
 
-        [dragon@dreamer-pc]$ docker push slkrylov/otus:v0.0.2
+        $ docker push slkrylov/otus:v0.0.2
 
         # применил новый манифест и убедился, что изменения не произошли
-         [dragon@dreamer-pc]$ kubectl apply -f frontend-replicaset.yaml 
+        $ kubectl apply -f frontend-replicaset.yaml 
             replicaset.apps/frontend configured
 
-          [dragon@dreamer-pc kubernetes-controllers]$ kubectl get pods --show-labels 
+        $ kubectl get pods --show-labels 
             NAME             READY   STATUS    RESTARTS   AGE   LABELS
             frontend-f24xj   1/1     Running   0          15h   app=frontend,branch=kubernetes-controllers,ver=fix
             frontend-mmbmt   1/1     Running   0          15h   app=frontend,branch=kubernetes-controllers,ver=fix
             frontend-qf2r4   1/1     Running   0          15h   app=frontend,branch=kubernetes-controllers,ver=fix
 
         # проверяю какая версия образа указана в объекте ReplicaSet
-        [dragon@dreamer-pc]$ kubectl get replicaset frontend -o=jsonpath='{.spec.template.spec.containers[0].image}'
+        $ kubectl get replicaset frontend -o=jsonpath='{.spec.template.spec.containers[0].image}'
             slkrylov/otus:v0.0.2
 
         # проверяю какой образ и версию используют запущенные Pod-ы
-        [dragon@dreamer-pc]$ kubectl get pods -l app=frontend -o=jsonpath='{.items[0:3].spec.containers[0].image}'
+        $ kubectl get pods -l app=frontend -o=jsonpath='{.items[0:3].spec.containers[0].image}'
             slkrylov/otus:microservices-frontend-fix
 
         # удаляю вручную Pod-ы
-        [dragon@dreamer-pc]$ kubectl delete pods -l 'app=frontend'
+        $ kubectl delete pods -l 'app=frontend'
 
         # снова проверяю какой образ используют восстановленные Pod-ы
-        [dragon@dreamer-pc]$ kubectl get pods -l app=frontend -o=jsonpath='{.items[0:3].spec.containers[0].image}'
+        $ kubectl get pods -l app=frontend -o=jsonpath='{.items[0:3].spec.containers[0].image}'
             slkrylov/otus:v0.0.2 
         ````
         > Руководствуясь материалами лекции опишите произошедшую
         > ситуацию, почему обновление ReplicaSet не повлекло обновление
         > запущенных pod?
         
-        A: Предполагаю, что это связано с тем, что контроллер ReplicaSet следит только за количеством запущенных реплик. 
-	
+        A: Предполагаю, что это связано с тем, что контроллер ReplicaSet следит только за количеством запущенных реплик.
+  
+  3. ## Работа с контроллером Deployment (https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
+      - ### Сборка image для микросервиса paymentService и размещение их https://hub.docker.com
 
-	
-    
+        ````bash
+        # сборка докер-образа из Dockerfile для paymentservice
+        $ docker build . --tag paymentservice:v0.0.1
+          Successfully built ee69d8d1812e
+          Successfully tagged paymentservice:v0.0.1
 
-    
+        # запустим контейнер из созданого образа 
+        $ docker run -d -p 127.0.0.1:50051:50051/tcp paymentservice:v0.0.1
+
+        # разместим образ на https://hub.docker.com с тэгами v0.0.1 и v0.0.2
+        $ docker tag ee69d8d1812e slkrylov/paymentservice:v0.0.1
+        $ docker push slkrylov/paymentservice:v0.0.1
+
+        $ docker tag ee69d8d1812e slkrylov/paymentservice:v0.0.2
+        $ docker push slkrylov/paymentservice:v0.0.2
+
+        # применение манифеста типа ReplicaSet для paymentservice:v0.0.1
+        $ kubectl apply -f paymentservice-replicaset.yaml
+            replicaset.apps/paymentservice created
+
+        $ kubectl get pods --show-labels -l "app=paymentservice"
+            NAME                   READY   STATUS    RESTARTS   AGE     LABELS
+            paymentservice-pln2c   1/1     Running   0          2m18s   app=paymentservice,branch=kubernetes-controllers,ver=v0.0.1
+            paymentservice-wt9vz   1/1     Running   0          2m18s   app=paymentservice,branch=kubernetes-controllers,ver=v0.0.1
+            paymentservice-z5q2m   1/1     Running   0          2m18s   app=paymentservice,branch=kubernetes-controllers,ver=v0.0.1
+            
+        # переделываю файл манифеста paymentservice-replicaset.yaml в манифест для Deployment
+        $ cp paymentservice-replicaset.yaml paymentservice-deployment.yaml
+
+        # применяю измененый манифест
+        $ kubectl apply -f paymentservice-deployment.yaml 
+
+        # проверяю, что появился объект deployment
+        $ kubectl get deployments.apps
+            NAME             READY   UP-TO-DATE   AVAILABLE   AGE
+            paymentservice   3/3     3            3           39s
+
+        # замечаю, что появилась новый объект replicaset (paymentservice-68ff48444d)
+        $ kubectl get replicasets.apps --show-labels 
+            NAME                        DESIRED   CURRENT   READY   AGE     LABELS
+            frontend                    3         3         3       3d16h   name=frontend-replicaset
+            paymentservice              3         3         3       21h     name=paymentservice-replicaset
+            paymentservice-68ff48444d   3         3         3       5s      app=paymentservice,branch=kubernetes-controllers,pod-template-hash=68ff48444d,ver=v0.0.1
+
+        # замечаю появление новых Pod-ов
+        $ kubectl get pods --show-labels 
+            NAME                              READY   STATUS    RESTARTS   AGE     LABELS
+            paymentservice-68ff48444d-58b7b   1/1     Running   0          113s    app=paymentservice,branch=kubernetes-controllers,pod-template-hash=68ff48444d,ver=v0.0.1
+            paymentservice-68ff48444d-r7fzq   1/1     Running   0          113s    app=paymentservice,branch=kubernetes-controllers,pod-template-hash=68ff48444d,ver=v0.0.1
+            paymentservice-68ff48444d-v2xwn   1/1     Running   0          113s    app=paymentservice,branch=kubernetes-controllers,pod-template-hash=68ff48444d,ver=v0.0.1
+            paymentservice-pln2c              1/1     Running   0          21h     app=paymentservice,branch=kubernetes-controllers,ver=v0.0.1
+            paymentservice-wt9vz              1/1     Running   0          21h     app=paymentservice,branch=kubernetes-controllers,ver=v0.0.1
+            paymentservice-z5q2m              1/1     Running   0          21h     app=paymentservice,branch=kubernetes-controllers,ver=v0.0.1
+        
+        # Так можно проследить цепочку кто owner объекта и тип owner-a
+        $ kubectl get pod paymentservice-68ff48444d-v2xwn -o jsonpath='{$.metadata.ownerReferences[0].kind} => {$.metadata.ownerReferences[0].name}'
+            ReplicaSet => paymentservice-68ff48444d
+        $ kubectl get replicasets.apps paymentservice-68ff48444d -o jsonpath='{$.metadata.ownerReferences[0].kind} => {$.metadata.ownerReferences[0].name}'
+            Deployment => paymentservice
+        
+        # Так можно проверить статус разворачивания деплоя
+        $ kubectl rollout status deployment paymentservice-deployment 
+            deployment "paymentservice-deployment" successfully rolled out
+
+        # После изменения в манифесте paymentservice-deployment.yaml используемой версии докер-образа 
+        # и повторного применения манифеста контроллер Deployment поочередно стал удалять реплики Pod-ов
+        # старых версий и последовательно запускать реплики Pod-ов с новой версией образа 
+        # (запустил один новый затем удалил старый и так для всех реплик).
+        # Такое обновление называется последовательным (Rolling Update). Готовность работы Pod-ов
+        # определяется с помощью  readiness-тестов.
+        #
+        # !TIPS:
+        # Типы стратегий развертывания:
+        #   - Rolling (постепенный, «накатываемый» деплой)
+        #   - Recreate (повторное создание)
+        #   - Blue/Green (сине-зеленые развертывания)
+        #   - Canary (канареечные развертывания)
+
+        # Убедился, что все Pod развернулись с новой версией образа (v0.0.2)
+        $ kubectl get pods -l "pod-template-hash=78775df8c4" -o=jsonpath='{.items[0:3].spec.containers[0].image}{"\n"}' | tr " " "\n"
+            slkrylov/paymentservice:v0.0.2
+            slkrylov/paymentservice:v0.0.2
+            slkrylov/paymentservice:v0.0.2
+        
+        # Убедился, что существуют объекты ReplicaSet для управления репликами нужных версий образа
+        $ kubectl get replicasets.apps -l "branch=kubernetes-controllers"
+            NAME                                   DESIRED   CURRENT   READY   AGE
+            paymentservice-deployment-68ff48444d   0         0         0       19h
+            paymentservice-deployment-78775df8c4   3         3         3       19h
+
+        # Просмотрел историю деплоя: номера ревизий, причину изменений
+        $ kubectl rollout history deployment paymentservice-deployment
+            deployment.apps/paymentservice-deployment 
+            REVISION  CHANGE-CAUSE
+            3         <none>
+            4         <none>
+
+        # Осуществил откат на предыдущую ревизию деплоя
+        $ kubectl rollout undo deployment paymentservice-deployment --to-revision=3
+
+        # Проверил, что изменилось количество реплик DESIRED/CURRENT/READY под управлением нужных ReplicaSet
+        $ kubectl get replicasets.apps -l "branch=kubernetes-controllers"
+            NAME                                   DESIRED   CURRENT   READY   AGE
+            paymentservice-deployment-68ff48444d   3         3         3       21h
+            paymentservice-deployment-78775df8c4   0         0         0       21h
+            
+        ````
+
+  4. ## Выполнение Deployment задания со  *
+      - ### ЗАДАНИЕ: Используя maxSurge и maxUnavailable осуществить стратегию Blue/Green
+          - #### развертывание трех новых pod
+          - #### удаление трех старых pod
+
+        ````bash
+        # ! TIPS: получение справки о maxSurge и maxUnavailable
+        $ kubectl explain deployment.spec.strategy.rollingUpdate
+        ````
+        
+        ````yaml
+        # для осуществления стратегии деплоя Gree-Blue были установлены следующие значения maxSurge: 100% и maxUnavailable: 0%
+
+        spec:
+        # количество запускаемых реплик
+        replicas: 3 
+        # стратегия деплоя 
+        strategy:
+          type: RollingUpdate
+            rollingUpdate:
+            maxSurge: 100%
+            maxUnavailable: 0%
+        ````
+
+        ````bash
+        # после изменения версии используемого образа и применении 
+        # отредатированного манифеста paymentservice-deployment-bg.yaml
+        # контроллер Deployment вначале запустил новые реплики и только 
+        # потом затушил реплики со старой версией образа
+
+        $ kubectl apply -f paymentservice-deployment-bg.yaml
+        $ kubectl get pod -w
+
+        paymentservice-5f7c5cd5c4-2cpv2   0/1     Pending   0          0s
+        paymentservice-5f7c5cd5c4-z6t4j   0/1     Pending   0          0s
+        paymentservice-5f7c5cd5c4-s6xjx   0/1     Pending   0          0s
+        paymentservice-5f7c5cd5c4-s6xjx   0/1     Pending   0          0s
+        paymentservice-5f7c5cd5c4-z6t4j   0/1     Pending   0          0s
+        paymentservice-5f7c5cd5c4-2cpv2   0/1     Pending   0          0s
+        paymentservice-5f7c5cd5c4-z6t4j   0/1     ContainerCreating   0          0s
+        paymentservice-5f7c5cd5c4-s6xjx   0/1     ContainerCreating   0          0s
+        paymentservice-5f7c5cd5c4-2cpv2   0/1     ContainerCreating   0          0s
+        paymentservice-5f7c5cd5c4-z6t4j   1/1     Running             0          1s
+        paymentservice-6fbd6dd944-pltws   1/1     Terminating         0          2m12s
+        paymentservice-5f7c5cd5c4-2cpv2   1/1     Running             0          2s
+        paymentservice-6fbd6dd944-drjf7   1/1     Terminating         0          2m13s
+        paymentservice-5f7c5cd5c4-s6xjx   1/1     Running             0          2s
+        paymentservice-6fbd6dd944-5vtpm   1/1     Terminating         0          2m13s
+        paymentservice-6fbd6dd944-pltws   0/1     Terminating         0          2m43s
+        paymentservice-6fbd6dd944-drjf7   0/1     Terminating         0          2m43s
+        paymentservice-6fbd6dd944-pltws   0/1     Terminating         0          2m44s
+        paymentservice-6fbd6dd944-pltws   0/1     Terminating         0          2m44s
+        paymentservice-6fbd6dd944-drjf7   0/1     Terminating         0          2m44s
+        paymentservice-6fbd6dd944-drjf7   0/1     Terminating         0          2m44s
+        paymentservice-6fbd6dd944-5vtpm   0/1     Terminating         0          2m45s
+        paymentservice-6fbd6dd944-5vtpm   0/1     Terminating         0          2m49s
+        paymentservice-6fbd6dd944-5vtpm   0/1     Terminating         0          2m49s
+
+        ````
+      - ### ЗАДАНИЕ: Реализовать Reverse Rolling Update
+        - #### Удаление одного старого pod
+        - #### Создание одного нового pod
+        - #### и.т.д
+
+        ````yaml 
+        # для реализации стратегии Reverse Rolling Update были установлены
+        # следующие значения maxSurge: 0 и maxUnavailable: 1
+
+        spec:
+          # количество запускаемых реплик
+          replicas: 3
+          # стратегия деплоя 
+          strategy:
+            type: RollingUpdate
+            rollingUpdate:
+              maxSurge: 0
+              maxUnavailable: 1
+        ````
+        ````bash
+        # после применения манифеста paymentservice-deployment-reverse.yaml
+        # с измененой версией образа получил стратегию Reverse Rolling Update
+
+        $ kubectl apply -f paymentservice-deployment-reverse.yaml
+        $ kubectl get pod -w
+            paymentservice-5b7896d85b-r562z   1/1     Terminating         0          42s
+            paymentservice-c95744f94-75nzw    0/1     Pending             0          0s
+            paymentservice-c95744f94-75nzw    0/1     Pending             0          0s
+            paymentservice-c95744f94-75nzw    0/1     ContainerCreating   0          0s
+            paymentservice-c95744f94-75nzw    1/1     Running             0          1s
+            paymentservice-5b7896d85b-zhl74   1/1     Terminating         0          43s
+            paymentservice-c95744f94-mmvb8    0/1     Pending             0          0s
+            paymentservice-c95744f94-mmvb8    0/1     Pending             0          0s
+            paymentservice-c95744f94-mmvb8    0/1     ContainerCreating   0          0s
+            paymentservice-c95744f94-mmvb8    1/1     Running             0          2s
+            paymentservice-5b7896d85b-w6llq   1/1     Terminating         0          45s
+            paymentservice-c95744f94-xzcf6    0/1     Pending             0          0s
+            paymentservice-c95744f94-xzcf6    0/1     Pending             0          0s
+            paymentservice-c95744f94-xzcf6    0/1     ContainerCreating   0          0s
+            paymentservice-c95744f94-xzcf6    1/1     Running             0          2s
+            paymentservice-5b7896d85b-r562z   0/1     Terminating         0          73s
+            paymentservice-5b7896d85b-r562z   0/1     Terminating         0          74s
+            paymentservice-5b7896d85b-zhl74   0/1     Terminating         0          74s
+            paymentservice-5b7896d85b-r562z   0/1     Terminating         0          74s
+            paymentservice-5b7896d85b-zhl74   0/1     Terminating         0          75s
+            paymentservice-5b7896d85b-zhl74   0/1     Terminating         0          75s
+            paymentservice-5b7896d85b-w6llq   0/1     Terminating         0          76s
+            paymentservice-5b7896d85b-w6llq   0/1     Terminating         0          82s
+            paymentservice-5b7896d85b-w6llq   0/1     Terminating         0          82s
+        ````
+  5. ## Работа с Probes
+
+      Для периодической проверки состояния контейнера (health check) могут быть использованы проверки *Probe
+        - readinessProbe
+        - startupProbe
+        - livenessProbe
+
+      *readinessProbe* влияет на PodCondition: Ready. В случае если проверка закончилась неудачей то контейнер будет удален из service endpoints
+      
+      ````yaml
+      ###
+      # пример readinessProbe
+      ###
+      spec:
+      containers:
+      - name: frontend
+        image: slkrylov/otus:v0.0.2
+        imagePullPolicy: Always
+        readinessProbe:
+          # задает количество секунд через, которое будет выполнена проверка после запуска контейнера 
+          initialDelaySeconds: 10
+          # задает, что для проверки будет выполнен HTTP-запрос
+          httpGet:
+            path: "/_healthz"
+            port: 8080
+            httpHeaders:
+            - name: "Cookie"
+              value: "shop_session-id=x-readiness-probe"
+                
+      ````
+
+      ````bash
+       # !TIPS:
+        $ kubectl explain deployment.spec.template.spec.containers
+        $ kubectl explain deployment.spec.template.spec.containers.readinessProbe
+      ````
+      - ### Имитация health check ошибки в readinessProbe
+      После того как я искуственно допустил ошибку в свойстве path в манифесте frontend-deployment.yaml
+      и применил манифест с новой версией образа я получил:
+
+      ````bash
+      # просмотр состояния pod-ов
+      $ kubectl get pods --show-labels
+        NAME                        READY   STATUS    RESTARTS   AGE   LABELS
+        frontend-5b8f4cfd65-d7jcq   1/1     Running   0          27m   app=frontend,branch=kubernetes-controllers,pod-template-hash=5b8f4cfd65,ver=v0.0.1
+        frontend-5b8f4cfd65-fz6sv   1/1     Running   0          27m   app=frontend,branch=kubernetes-controllers,pod-template-hash=5b8f4cfd65,ver=v0.0.1
+        frontend-5b8f4cfd65-l67vv   1/1     Running   0          27m   app=frontend,branch=kubernetes-controllers,pod-template-hash=5b8f4cfd65,ver=v0.0.1
+        frontend-66f8d7f647-pn9jq   0/1     Running   0          10m   app=frontend,branch=kubernetes-controllers,pod-template-hash=66f8d7f647,ver=v0.0.2
+
+      # просмотр причины ошибки и значения Readiness
+      $ kubectl describe pod frontend-66f8d7f647-pn9jq | grep -P '(Readiness|Warning)'
+        Readiness:      http-get http://:8080/_health delay=10s timeout=1s period=10s #success=1 #failure=3
+        Warning  Unhealthy  2m40s (x60 over 12m)  kubelet, kind-worker2  Readiness probe failed: HTTP probe failed with statuscode: 404
+
+      # просмотр статуса деплоя 
+      $ kubectl rollout status deployment/frontend
+        error: deployment "frontend" exceeded its progress deadline
+      ````
+  6. ## Работа с DaemonSet
+      Целью контроллера DaemonSet является запуск Pod-a на всех (или выборочных) нодах. По мере добавления нод в кластер на них будет запущен нужный Pod. Обычно используется для запуска в кластере storage daemons (glusterd, ceph), logs collection daemon (fluentd or filebeat),  monitoring daemon ( Prometheus Node Exporter, Flowmill, Sysdig Agent, collectd, Dynatrace OneAgent, AppDynamics Agent, Datadog agent, New Relic agent, Ganglia gmond, Instana Agent or Elastic Metricbeat.). 
+      Выбор нод осуществляется планировщиком Kubernates ( scheduler) 
+
+      - ### DaemonSet задание *
+
+      ````bash
+        # применяю манифест
+        $ kubectl apply -f node-exporter-daemonset.yaml
+            daemonset.apps/node-exporter created
+
+        # проверяю, что pod'ы запустились и выполняются только на worker'ах
+         $ kubectl get pods --all-namespaces -o wide | grep node-exporter
+            kube-system          node-exporter-7nm8n                           1/1     Running   0          16m   10.244.3.2   kind-worker2          <none>           <none>
+            kube-system          node-exporter-mlfhc                           1/1     Running   0          16m   10.244.4.2   kind-worker           <none>           <none>
+            kube-system          node-exporter-q7xk2                           1/1     Running   0          16m   10.244.5.2   kind-worker3          <none>           <none>
+
+        # прокидываю порт к одному из подов 
+        $ kubectl port-forward node-exporter-7nm8n 9100:9100 --namespace=kube-system 
+            Forwarding from 127.0.0.1:9100 -> 9100
+            Forwarding from [::1]:9100 -> 9100
+
+        # проверю, что под отдает метрики
+        $ curl localhost:9100/metrics | less      
+      ````
+      - ### DaemonSet задание **
+        Для управления на каких нодах должен быть запущен pod используется два механизма:
+          - nodeSelector
+          - taints и tolerations (https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)
+
+        ````yaml
+        # данный toleration управляет возможностью запуска daemonset на master-нодах
+        # $ kubectl explain daemonsets.spec.template.spec.tolerations
+        tolerations:
+          - key: node-role.kubernetes.io/master
+            # возможные значения для effect (NoSchedule|PreferNoSchedule|NoExecute)
+            effect: NoSchedule
+        ````
+
+        ````bash
+      
+          $ kubectl get daemonsets.apps -n kube-system -l "k8s-app=node-exporter-daemon"
+          NAME            DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
+          node-exporter   3         3         3       3            3           <none>          12h
+          # Удаляю ранее  созданный daemonset
+          $ kubectl delete daemonsets.apps -n kube-system -l "k8s-app=node-exporter-daemon"
+          daemonset.apps "node-exporter" deleted
+          
+          # применяю измененный манифест в который была добавлена секция tolerations
+          $ kubectl apply -f node-exporter-daemonset.yaml
+
+          # проверяю, что pod'ы запустились еще и на master-нодах
+          $ kubectl get pods --all-namespaces -o wide | grep node-exporter
+          kube-system          node-exporter-9bl7k                           1/1     Running   0          2m56s   10.244.1.2   kind-control-plane2   <none>           <none>
+          kube-system          node-exporter-bv2qr                           1/1     Running   0          2m56s   10.244.0.5   kind-control-plane    <none>           <none>
+          kube-system          node-exporter-cjvdg                           1/1     Running   0          2m56s   10.244.2.2   kind-control-plane3   <none>           <none>
+          kube-system          node-exporter-cvl49                           1/1     Running   0          2m56s   10.244.4.3   kind-worker           <none>           <none>
+          kube-system          node-exporter-m2flc                           1/1     Running   0          2m56s   10.244.5.3   kind-worker3          <none>           <none>
+          kube-system          node-exporter-psxqv                           1/1     Running   0          2m56s   10.244.3.3   kind-worker2          <none>           <none>
+        ````
