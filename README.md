@@ -928,6 +928,7 @@
           - taints и tolerations (https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)
 
         ````yaml
+        # см. https://github.com/kubernetes/community/blob/930ce65595a3f7ce1c49acfac711fee3a25f5670/contributors/design-proposals/scheduling/taint-toleration-dedicated.md
         # данный toleration управляет возможностью запуска daemonset на master-нодах
         # $ kubectl explain daemonsets.spec.template.spec.tolerations
         tolerations:
